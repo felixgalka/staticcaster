@@ -1,0 +1,5 @@
+{
+  "name": "stratosphere",
+  "version": "0.1.0",
+  "dependencies": [ "portaudio" ]
+}
