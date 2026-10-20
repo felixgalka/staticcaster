@@ -18,9 +18,9 @@ namespace {
     }
 }
 
-Logger(Logger::Level level) : _level{ level } {};
+Logger::Logger(Logger::Level level) : _level{ level } {};
 
-~Logger() {
+Logger::~Logger() {
     try {
         std::string msg = _buffer.str();
 

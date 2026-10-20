@@ -5,5 +5,14 @@ set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(portaudio CONFIG REQUIRED)
-add_executable(staticcaster src/main.cpp "src/IO/AudioInput.h"  "src/logging/Logging.h" "src/IO/AudioContext.cpp" "src/IO/AudioContext.h" "src/utils/ErrorHandling.h")
+
+add_executable(staticcaster
+    src/main.cpp
+    "src/audio/Stream.cpp"
+    "src/audio/Context.cpp"
+    src/utils/Logging.cpp
+    src/utils/Errors.cpp
+ "src/utils/Types.h" "src/utils/Devices.cpp" "src/utils/Devices.h" "src/utils/CLIParser.cpp" "src/utils/CLIParser.h")
+
+target_include_directories(staticcaster PRIVATE src)
 target_link_libraries(staticcaster PRIVATE portaudio)

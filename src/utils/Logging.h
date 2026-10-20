@@ -1,6 +1,9 @@
 #pragma once
 
+#include <portaudio.h>
+
 #include <sstream>
+#include <iostream>
 
 class Logger {
 
