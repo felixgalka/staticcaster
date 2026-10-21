@@ -6,19 +6,17 @@
 #include "utils/Logging.h"
 #include "utils/Types.h"
 
-#include <cstdint>
-
 #define SAMPLE_RATE 44100
 
-Stream::Stream(PaSampleFormat fmt, PaStreamCallback* cb, TestData* data) {
+Stream::Stream(Types::StreamParams params, PaStreamCallback* cb, Types::TestData* data) {
     
-    const PaError err = Pa_OpenDefaultStream(
+    const PaError err = Pa_OpenStream(
         &stream_,
-        0,
-        2,
-        fmt,
+        &params.in,
+        &params.out,
         SAMPLE_RATE,
-        256,
+        params.framesPerBuffer,
+        paNoFlag,
         cb,
         &data);
 

@@ -23,6 +23,7 @@ namespace {
         if (IsInt(s)) {
             return std::stoi(std::string(s));
         }
+        return std::nullopt;
     }
 }
 

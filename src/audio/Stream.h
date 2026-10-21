@@ -1,14 +1,13 @@
 #pragma once
 
-#include <memory>
 #include "utils/Types.h"
 
-
-
+#include <memory>
+#include <utility>
 
 class Stream {
 public:
-	Stream(PaSampleFormat fmt, PaStreamCallback* cb, TestData* data);
+	Stream(Types::StreamParams params, PaStreamCallback* cb, Types::TestData* data);
 	~Stream();
 	Stream(const Stream&) = delete;
 	Stream& operator= (const Stream&) = delete;
