@@ -6,36 +6,10 @@
 #include "utils/CLIParser.h"
 #include "audio/Context.h"
 #include "audio/Stream.h"
+#include "audio/Engine.h"
 
 #include <string_view>
 #include <vector>
-
-static int patestCallback(const void* inputBuffer, void* outputBuffer,
-    unsigned long framesPerBuffer,
-    const PaStreamCallbackTimeInfo* timeInfo,
-    PaStreamCallbackFlags statusFlags,
-    void* userData)
-{
-    /* Cast data passed through stream to our structure. */
-    Types::TestData* data = (Types::TestData*)userData;
-    float* out = (float*)outputBuffer;
-    unsigned int i;
-    (void)inputBuffer; /* Prevent unused variable warning. */
-
-    for (i = 0; i < framesPerBuffer; i++)
-    {
-        *out++ = data->left_phase;  /* left */
-        *out++ = data->right_phase;  /* right */
-        /* Generate simple sawtooth phaser that ranges between -1.0 and 1.0. */
-        data->left_phase += 0.01f;
-        /* When signal reaches top, drop back down. */
-        if (data->left_phase >= 1.0f) data->left_phase -= 2.0f;
-        /* higher pitch so we can distinguish left and right. */
-        data->right_phase += 0.03f;
-        if (data->right_phase >= 1.0f) data->right_phase -= 2.0f;
-    }
-    return 0;
-}
 
 int main(int argc, char *argv[]) {
     LOG() << std::format("Portaudio version : {}", Pa_GetVersion());
@@ -56,13 +30,14 @@ int main(int argc, char *argv[]) {
         }
         if (opts.input) {
             inputDevice = *opts.input;
-            LOG() << "Input chosen as: " << Pa_GetDeviceInfo(inputDevice)->name;
         }
         if (opts.output) {
-            inputDevice = *opts.output; 
-            LOG() << "Output chosen as: " << Pa_GetDeviceInfo(outputDevice)->name;
+            outputDevice = *opts.output; 
         }
     }
+    LOG() << "Input chosen as: " << Pa_GetDeviceInfo(inputDevice)->name;
+    LOG() << "Output chosen as: " << Pa_GetDeviceInfo(outputDevice)->name;
+
     PaStreamParameters in{};
     PaStreamParameters out{};
 
@@ -79,12 +54,14 @@ int main(int argc, char *argv[]) {
     out.hostApiSpecificStreamInfo = nullptr;
 
     Types::StreamParams params{ .in = in,.out = out ,.framesPerBuffer = 256 };
+    auto engine{ std::make_unique<AudioEngine>() };
 
-    const std::unique_ptr<Types::TestData> data = std::make_unique<Types::TestData>(0,0);
-     
-    Stream stream{ params, patestCallback, data.get() };
+    Stream stream{ params, AudioEngine::Callback, engine.get()};
+    engine->Prepare(256);
     stream.Start();
+    Pa_Sleep(10000);
     stream.Stop();
+
 }
 
 

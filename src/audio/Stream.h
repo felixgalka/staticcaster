@@ -7,7 +7,7 @@
 
 class Stream {
 public:
-	Stream(Types::StreamParams params, PaStreamCallback* cb, Types::TestData* data);
+	Stream(Types::StreamParams params, PaStreamCallback* cb, void* userData);
 	~Stream();
 	Stream(const Stream&) = delete;
 	Stream& operator= (const Stream&) = delete;

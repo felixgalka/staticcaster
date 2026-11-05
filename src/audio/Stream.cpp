@@ -8,7 +8,7 @@
 
 #define SAMPLE_RATE 44100
 
-Stream::Stream(Types::StreamParams params, PaStreamCallback* cb, Types::TestData* data) {
+Stream::Stream(Types::StreamParams params, PaStreamCallback* cb, void* userData) {
     
     const PaError err = Pa_OpenStream(
         &stream_,
@@ -18,7 +18,7 @@ Stream::Stream(Types::StreamParams params, PaStreamCallback* cb, Types::TestData
         params.framesPerBuffer,
         paNoFlag,
         cb,
-        &data);
+        userData);
 
     Errors::CheckFatal(err);
     LOG() << "Opened stream";
@@ -27,7 +27,6 @@ Stream::Stream(Types::StreamParams params, PaStreamCallback* cb, Types::TestData
 Stream::~Stream() {
     Errors::CheckNonFatal(Pa_CloseStream(stream_));
     LOG() << "Closed stream";
-
 }
 
 void Stream::Start() {

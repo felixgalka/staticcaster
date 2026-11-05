@@ -2,20 +2,19 @@
 
 #include <portaudio.h>
 
-namespace Types {
-    typedef struct
-    {
-        float left_phase;
-        float right_phase;
-    }
-    TestData;
+#include <atomic>
+#include <span>
+#include <ranges>
+#include <algorithm>
+#include <vector>
 
-    typedef struct
+namespace Types {
+    
+    struct StreamParams
     {
-        PaStreamParameters in;
-        PaStreamParameters out;
+        PaStreamParameters in{};
+        PaStreamParameters out{};
         int framesPerBuffer;
-    }
-    StreamParams;
+    };
 }
 
