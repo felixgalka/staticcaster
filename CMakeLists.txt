@@ -12,7 +12,7 @@ add_executable(staticcaster
     "src/audio/Context.cpp"
     src/utils/Logging.cpp
     src/utils/Errors.cpp
- "src/utils/Types.h" "src/utils/Devices.cpp" "src/utils/Devices.h" "src/utils/CLIParser.cpp" "src/utils/CLIParser.h" "src/audio/Effects.cpp" "src/audio/Engine.cpp")
+ "src/utils/Types.h" "src/utils/Devices.cpp" "src/utils/Devices.h" "src/utils/CLIParser.cpp" "src/utils/CLIParser.h"  "src/audio/Engine.cpp" "src/audio/fx/IEffect.h" "src/audio/fx/Distortion.h")
 
 target_include_directories(staticcaster PRIVATE src)
 target_link_libraries(staticcaster PRIVATE portaudio)

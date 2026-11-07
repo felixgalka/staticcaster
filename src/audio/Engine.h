@@ -1,17 +1,19 @@
 #pragma once
 
+#include "fx/IEffect.h"
+#include "utils/Types.h"
+
 #include <portaudio.h>
 
 #include <atomic>
-#include <span>
 #include <ranges>
-#include <algorithm>
 #include <vector>
+#include <memory>
+#include <cstdint>
 
 struct AudioEngine {
 
-    std::atomic<float>    gain{ 1.0f };
-    std::atomic<bool>     effects{ false };
+    std::atomic<float>    masterVolume{ 1.0f };
     std::vector<float>    bufCopy;
 
     static int Callback(
@@ -23,6 +25,10 @@ struct AudioEngine {
         void* userData);
 
     [[nodiscard]] static PaStreamCallback* GetCallback() noexcept { return &AudioEngine::Callback; };
+    Effect* GetEffect(Types::Effects effect);
+    void AddEffect(std::unique_ptr<Effect> effect);
     void Prepare(std::size_t maxFrames);
     void Process(std::span<float> buf);
+
+    std::vector<std::unique_ptr<Effect>> effects;
 };

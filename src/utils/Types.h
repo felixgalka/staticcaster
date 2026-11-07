@@ -2,11 +2,7 @@
 
 #include <portaudio.h>
 
-#include <atomic>
-#include <span>
-#include <ranges>
-#include <algorithm>
-#include <vector>
+#include <cstdint>
 
 namespace Types {
     
@@ -15,6 +11,11 @@ namespace Types {
         PaStreamParameters in{};
         PaStreamParameters out{};
         int framesPerBuffer;
+    };
+
+    enum class Effects : uint8_t {
+        Fuzz = 0,
+        Distortion,
     };
 }
 

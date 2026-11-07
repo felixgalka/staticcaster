@@ -1,26 +1,28 @@
 #include "Logging.h"
 
-#include <cstdint>
 #include <chrono>
-#include <iostream>
+#include <cstdint>
 #include <format>
+#include <iostream>
 
 namespace {
 
-    using namespace std::chrono;
+using namespace std::chrono;
 
-    constexpr std::size_t MAX_LOG_LENGTH = 512;
+constexpr std::size_t MAX_LOG_LENGTH = 512;
 
-    std::string formatTimeZone(std::chrono::system_clock::time_point tp)
-    {
-        static auto const TZ = locate_zone("Etc/GMT-1");
-        return std::format("{:%FT%T%z}", zoned_time{ TZ, floor<milliseconds>(tp) });
-    }
+std::string formatTimeZone(std::chrono::system_clock::time_point tp)
+{
+    static auto const TZ = locate_zone("Etc/GMT-1");
+    return std::format("{:%FT%T%z}", zoned_time { TZ, floor<milliseconds>(tp) });
+}
 }
 
-Logger::Logger(Logger::Level level) : _level{ level } {};
+Logger::Logger(Logger::Level level)
+    : _level { level } { };
 
-Logger::~Logger() {
+Logger::~Logger()
+{
     try {
         std::string msg = _buffer.str();
 
@@ -30,11 +32,10 @@ Logger::~Logger() {
             msg += std::format(" + {} characters truncated", overflow);
         }
 
-        std::string timestamp{};
+        std::string timestamp {};
         try {
             timestamp = formatTimeZone(std::chrono::system_clock::now());
-        }
-        catch (...) {
+        } catch (...) {
             timestamp = "[TIMESTAMP FAIL]";
         }
 
@@ -42,6 +43,6 @@ Logger::~Logger() {
 
         std::ostream& out = (_level >= Level::Warn) ? std::cerr : std::cout;
         out << line;
+    } catch (...) {
     }
-    catch (...) {}
 }

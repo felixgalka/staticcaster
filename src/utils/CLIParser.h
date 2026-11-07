@@ -3,6 +3,7 @@
 #include <optional>
 #include <span>
 #include <string_view>
+#include <atomic>
 
 struct DeviceOptions {
     bool list = false;
