@@ -10,11 +10,11 @@ SpacesInContainerLiterals: false
 SortIncludes: CaseInsensitive
 IncludeBlocks: Regroup
 IncludeCategories:
-  - Regex:    '^"'            # project headers
+  - Regex:    '^"'           
     Priority: 2
-  - Regex:    '^<(portaudio|rtmidi|sndfile)'   # third party; list yours
+  - Regex:    '^<(portaudio|rtmidi|sndfile)' 
     Priority: 3
-  - Regex:    '^<[a-z_]+(\.h)?>$'              # std headers (no slash)
+  - Regex:    '^<[a-z_]+(\.h)?>$'            
     Priority: 4
 IncludeIsMainRegex: '(Test)?$'
 NamespaceIndentation: All
